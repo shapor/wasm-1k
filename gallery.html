@@ -5,11 +5,15 @@
 body{margin:0;background:#111;color:#fff;font:14px monospace;display:flex;flex-wrap:wrap;justify-content:center;gap:20px;padding:20px}
 .demo{text-align:center}
 canvas{image-rendering:pixelated;width:400px;height:400px;display:block;border:1px solid #333}
+h1{width:100%;text-align:center;margin:10px 0 0}
+h1 a{color:#0f0;text-decoration:none}
+h1 a:hover{text-decoration:underline}
 h2{margin:8px 0;font-size:14px}
 span{color:#0f0}
 </style>
 </head>
 <body>
+<h1>wasm-1k <a href="https://github.com/shapor/wasm-1k">github</a></h1>
 <script>
 const demos=[
   {name:'Plasma 400B',file:'plasma.wasm'},
