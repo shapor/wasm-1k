@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{margin:0;background:#111;color:#fff;font:14px monospace;display:flex;flex-wrap:wrap;justify-content:center;gap:20px;padding:20px}
+.demo{text-align:center}
+canvas{image-rendering:pixelated;width:400px;height:400px;display:block;border:1px solid #333}
+h2{margin:8px 0;font-size:14px}
+span{color:#0f0}
+</style>
+</head>
+<body>
+<script>
+const demos=[
+  {name:'Plasma 400B',file:'plasma.wasm'},
+  {name:'Plasma 1K',file:'plasma1k.wasm'},
+  {name:'Terrain 1K',file:'terrain1k.wasm'}
+];
+demos.forEach(d=>{
+  const div=document.createElement('div');
+  div.className='demo';
+  const cv=document.createElement('canvas');
+  cv.width=cv.height=256;
+  const h=document.createElement('h2');
+  div.appendChild(cv);div.appendChild(h);
+  document.body.appendChild(div);
+  const ctx=cv.getContext('2d');
+  fetch(d.file).then(r=>r.arrayBuffer()).then(b=>
+    WebAssembly.instantiate(b,{'':{s:Math.sin}})
+  ).then(({instance:w})=>{
+    const id=new ImageData(new Uint8ClampedArray(w.exports.m.buffer,0,262144),256);
+    h.innerHTML=d.name+' <span></span>';
+    const sz=h.querySelector('span');
+    fetch(d.file).then(r=>r.headers.get('content-length')||'?').then(s=>sz.textContent='('+s+'b)');
+    !function f(t){w.exports.r(t/1e3);ctx.putImageData(id,0,0);requestAnimationFrame(f)}(0)
+  }).catch(e=>{h.textContent=d.name+' - '+e.message})
+})
+</script>
+</body>
+</html>

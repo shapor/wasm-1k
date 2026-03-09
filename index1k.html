@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden}
+canvas{image-rendering:pixelated;width:100vmin;height:100vmin}
+</style>
+</head>
+<body>
+<canvas id=c width=256 height=256></canvas>
+<script>
+const x=c.getContext('2d');
+fetch('terrain1k.wasm').then(r=>r.arrayBuffer()).then(b=>
+  WebAssembly.instantiate(b,{'':{s:Math.sin}})
+).then(({instance:w})=>{
+  const d=new ImageData(new Uint8ClampedArray(w.exports.m.buffer,0,262144),256);
+  !function f(t){w.exports.r(t/1e3);x.putImageData(d,0,0);requestAnimationFrame(f)}(0)
+})
+</script>
+</body>
+</html>
