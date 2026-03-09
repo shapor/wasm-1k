@@ -29,13 +29,16 @@ demos.forEach(d=>{
   div.appendChild(cv);div.appendChild(h);
   document.body.appendChild(div);
   const ctx=cv.getContext('2d');
-  fetch(d.file).then(r=>r.arrayBuffer()).then(b=>
-    WebAssembly.instantiate(b,{'':{s:Math.sin}})
-  ).then(({instance:w})=>{
-    const id=new ImageData(new Uint8ClampedArray(w.exports.m.buffer,0,262144),256);
-    h.textContent=d.name+' ('+d.size+'b)';
-    !function f(t){w.exports.r(t/1e3);ctx.putImageData(id,0,0);requestAnimationFrame(f)}(0)
-  }).catch(e=>{h.textContent=d.name+' - '+e.message})
+  fetch(d.file).then(r=>{
+    const gz=r.headers.get('content-length');
+    return r.arrayBuffer().then(b=>[b,gz])
+  }).then(([b,gz])=>
+    WebAssembly.instantiate(b,{'':{s:Math.sin}}).then(({instance:w})=>{
+      const id=new ImageData(new Uint8ClampedArray(w.exports.m.buffer,0,262144),256);
+      h.innerHTML=d.name+' <span>'+d.size+'b'+(gz&&gz!=d.size?' / '+gz+'b gzip':'')+'</span>';
+      !function f(t){w.exports.r(t/1e3);ctx.putImageData(id,0,0);requestAnimationFrame(f)}(0)
+    })
+  ).catch(e=>{h.textContent=d.name+' - '+e.message})
 })
 </script>
 </body>
