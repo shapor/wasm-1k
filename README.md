@@ -12,7 +12,7 @@ The starting point. A rotozoom plasma with 3 interfering sine waves, rotating ov
 ### Plasma 1K (647 bytes)
 The 400B version cranked up: 5 sine waves, per-pixel warp distortion, pulsing zoom, wobbling rotation, and a time-cycling rainbow palette. More complex interference patterns, more organic movement.
 
-### Terrain 1K (796 bytes)
+### Terrain 1K (739 bytes)
 A 3D terrain flyover using column-based raycasting. 3 octaves of sine-wave terrain with rainbow coloring, distance fog, and a swaying camera. The most ambitious effect — voxel-style rendering in under 800 bytes.
 
 ## How It Works
@@ -52,7 +52,7 @@ Then open `http://localhost:8080/gallery.html` to see all demos running side by 
 |------|------|-------|----------|
 | Plasma 400B | 399 bytes | 1024 | 625 bytes |
 | Plasma 1K | 647 bytes | 1024 | 377 bytes |
-| Terrain 1K | 796 bytes | 1024 | 228 bytes |
+| Terrain 1K | 739 bytes | 1024 | 285 bytes |
 
 ## License
 

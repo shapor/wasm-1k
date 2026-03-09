@@ -16,9 +16,9 @@ span{color:#0f0}
 <h1>wasm-1k <a href="https://github.com/shapor/wasm-1k">github</a></h1>
 <script>
 const demos=[
-  {name:'Plasma 400B',file:'plasma.wasm'},
-  {name:'Plasma 1K',file:'plasma1k.wasm'},
-  {name:'Terrain 1K',file:'terrain1k.wasm'}
+  {name:'Plasma 400B',file:'plasma.wasm',size:399},
+  {name:'Plasma 1K',file:'plasma1k.wasm',size:647},
+  {name:'Terrain 1K',file:'terrain1k.wasm',size:739}
 ];
 demos.forEach(d=>{
   const div=document.createElement('div');
@@ -33,9 +33,7 @@ demos.forEach(d=>{
     WebAssembly.instantiate(b,{'':{s:Math.sin}})
   ).then(({instance:w})=>{
     const id=new ImageData(new Uint8ClampedArray(w.exports.m.buffer,0,262144),256);
-    h.innerHTML=d.name+' <span></span>';
-    const sz=h.querySelector('span');
-    fetch(d.file).then(r=>r.headers.get('content-length')||'?').then(s=>sz.textContent='('+s+'b)');
+    h.textContent=d.name+' ('+d.size+'b)';
     !function f(t){w.exports.r(t/1e3);ctx.putImageData(id,0,0);requestAnimationFrame(f)}(0)
   }).catch(e=>{h.textContent=d.name+' - '+e.message})
 })
